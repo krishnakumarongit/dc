@@ -102,3 +102,5 @@ table.manage-table tr:hover td,
 .job-list li.highlighted a:after,
 .job-list li a:after { background-color: #26ae61 }
 
+.note { font-style:italic;}
+

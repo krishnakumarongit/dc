@@ -42,16 +42,34 @@
 				<h5>Dogs Age *</h5>
 				<div class="one-third column" style="margin-left:0px;">
 					<select name="years" id="years" class="chosen-select-no-single">
-						<option value=""></option>
+						<option value="">Years</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="10+">10+</option>
 					</select>
 				</div>
 				<div class="one-third column">
 					<select name="month" id="month" class="chosen-select-no-single">
-						<option value=""></option>
+						<option value="">Months</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
 					</select>
 				</div>
 				<div style="width:100%;">&nbsp;</div>
@@ -60,17 +78,20 @@
 			<!-- Location -->
 			<div class="form">
 				<h5>Ad Headline / Title *</span></h5>
-				<input maxlength="75" name="title" id="title" class="search-field" type="text" placeholder="Ad Headline / Title" title="Please enter your ad title. Ad title can have maximum of 75 characters." value=""/>
+				<input maxlength="75" name="title" id="title" class="search-field" type="text" placeholder="Ad Headline / Title" value=""/>
+			   <p class="note">Please enter your ad title. Ad title can have maximum of 75 characters.</p>
 			</div>
 			
              <div class="form">
 				<h5>Ad Description *</h5>
-				<textarea title="Please enter a detail description of your dog. Ad description should have minimum character length of 100."  name="description" cols="40" rows="12" placeholder="Ad Description"  id="description" ></textarea>
+				<textarea   name="description" cols="40" rows="12" placeholder="Ad Description"  id="description" ></textarea>
+			    <p class="note">Please enter a detail description of your dog. Ad description should have minimum character length of 100.</p>
 			</div>
 			
 			 <div class="form">
 				<h5>Asking Price (&#8377;)*</h5>
-				<input name="price" id="price" class="search-field" type="text" title="Please enter the asking price in rupee, must be numeric only" placeholder="Asking price" value=""/>
+				<input name="price" id="price" class="search-field" type="text"  placeholder="Asking price" value=""/>
+			    <p class="note">Please enter the asking price in rupee, must be numeric only.</p>
 			</div>
 			
 	
