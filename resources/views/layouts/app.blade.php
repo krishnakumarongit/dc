@@ -193,5 +193,7 @@
 <script src="{{ asset('scripts/stacktable.js') }}"></script>
 <script src="{{ asset('scripts/headroom.min.js') }}"></script>
 
+@yield('dynamicjs')
+
 </body>
 </html>

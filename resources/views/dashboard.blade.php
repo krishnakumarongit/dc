@@ -19,20 +19,41 @@
 	<!-- Submit Page -->
 	<div class="sixteen columns">
 		<div class="submit-page">
+			
+    <div id="error_mess" style="display:none;" class="notification error closeable margin-bottom-40">
+		<p style="padding-bottom:10px;"><B>We found the following errors in your ad. Please correct the errors below and save the ad again.</B></p>
+		<p id="error_p"></p>
+	</div>			
+			
+	 @if ($errors->any())
+    <div class="notification error closeable margin-bottom-10">
+		<p style="padding-bottom:10px;"><B>We found the following errors in your ad. Please correct the errors below and save the ad again</B></p>
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+			
+			
 
+	<form method="post" action="{{ route('post.ad') }}" onsubmit="return validate()">
+	@csrf
 			<!-- Notice -->
 			<div class="notification notice closeable margin-bottom-40">
-				<p>Please enter your ad details below and click on 'Next' button to save the ad and continue to the location page. Fields marked with an asterisk (*) are mandatory.</p>
+				<p>Please enter your ad details below and click on 'Next' button to save the ad and continue to the Location and Contact Details. Fields marked with an asterisk (*) are mandatory.</p>
 			</div>
 
 
 			<!-- Email -->
 			<div class="form">
 				<h5>Dog Bread *</h5>
-				<select name="bread" id="bre" class="chosen-select-no-single">
+				<select name="breed" id="breed" class="chosen-select-no-single">
 				<option value=""></option>
-				<option value="1">1</option>
-				<option value="2">2</option>
+				@foreach($breads as $row)
+				  <option @if(old('breed') == $row->breed) {{'selected'}} @endif value="{{$row->breed}}">{{$row->breed}}</option>
+				@endforeach
 			</select>
 
 			</div>
@@ -43,33 +64,33 @@
 				<div class="one-third column" style="margin-left:0px;">
 					<select name="years" id="years" class="chosen-select-no-single">
 						<option value="">Years</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-						<option value="10">10</option>
-						<option value="10+">10+</option>
+						<option @if(old('years') == 1) {{'selected'}} @endif  value="1">1 Year</option>
+						<option @if(old('years') == 2) {{'selected'}} @endif  value="2">2 Years</option>
+						<option @if(old('years') == 3) {{'selected'}} @endif  value="3">3 Years</option>
+						<option @if(old('years') == 4) {{'selected'}} @endif  value="4">4 Years</option>
+						<option @if(old('years') == 5) {{'selected'}} @endif  value="5">5 Years</option>
+						<option @if(old('years') == 6) {{'selected'}} @endif  value="6">6 Years</option>
+						<option @if(old('years') == 7) {{'selected'}} @endif value="7">7 Years</option>
+						<option @if(old('years') == 8) {{'selected'}} @endif value="8">8 Years</option>
+						<option @if(old('years') == 9) {{'selected'}} @endif value="9">9 Years</option>
+						<option @if(old('years') == 10) {{'selected'}} @endif value="10">10 Years</option>
+						<option @if(old('years') == '10+') {{'selected'}} @endif value="10+">10+ Years</option>
 					</select>
 				</div>
 				<div class="one-third column">
 					<select name="month" id="month" class="chosen-select-no-single">
 						<option value="">Months</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
+						<option @if(old('month') == 1) {{'selected'}} @endif  value="1">1 Month</option>
+						<option @if(old('month') == 2) {{'selected'}} @endif  value="2">2 Months</option>
+						<option @if(old('month') == 3) {{'selected'}} @endif  value="3">3 Months</option>
+						<option @if(old('month') == 4) {{'selected'}} @endif  value="4">4 Months</option>
+						<option @if(old('month') == 5) {{'selected'}} @endif  value="5">5 Months</option>
+						<option @if(old('month') == 6) {{'selected'}} @endif  value="6">6 Months</option>
+						<option @if(old('month') == 7) {{'selected'}} @endif value="7">7 Months</option>
+						<option @if(old('month') == 8) {{'selected'}} @endif value="8">8 Months</option>
+						<option @if(old('month') == 9) {{'selected'}} @endif value="9">9 Months</option>
+						<option @if(old('month') == 10) {{'selected'}} @endif value="10">10 Months</option>
+						<option @if(old('month') == 11) {{'selected'}} @endif value="11">11 Months</option>
 					</select>
 				</div>
 				<div style="width:100%;">&nbsp;</div>
@@ -78,232 +99,94 @@
 			<!-- Location -->
 			<div class="form">
 				<h5>Ad Headline / Title *</span></h5>
-				<input maxlength="75" name="title" id="title" class="search-field" type="text" placeholder="Ad Headline / Title" value=""/>
-			   <p class="note">Please enter your ad title. Ad title can have maximum of 75 characters.</p>
+				<input maxlength="100" name="title" id="title" class="search-field" type="text" placeholder="Ad Headline / Title" value="{{ old('title') }}"/>
+			   <p class="note">Please enter your ad title. Ad title can have maximum of 100 characters.</p>
 			</div>
 			
              <div class="form">
 				<h5>Ad Description *</h5>
-				<textarea   name="description" cols="40" rows="12" placeholder="Ad Description"  id="description" ></textarea>
+				<textarea   name="description" cols="40" rows="12" placeholder="Ad Description"  id="description" >{{ old('description') }}</textarea>
 			    <p class="note">Please enter a detail description of your dog. Ad description should have minimum character length of 100.</p>
 			</div>
 			
 			 <div class="form">
 				<h5>Asking Price (&#8377;)*</h5>
-				<input name="price" id="price" class="search-field" type="text"  placeholder="Asking price" value=""/>
+				<input name="price" id="price" class="search-field" type="text"  placeholder="Asking price" value="{{ old('price') }}"/>
 			    <p class="note">Please enter the asking price in rupee, must be numeric only.</p>
 			</div>
 			
 	
 			<div class="divider margin-top-0"></div>
-			<a href="#" class="button big margin-top-5" style="float:right;">Next <i class="fa fa-arrow-circle-right"></i></a>
+			<button type="submit" class="button big margin-top-5" style="float:right;">Next <i class="fa fa-arrow-circle-right"></i></button>
 
-
+</form>
 
 		</div>
 	</div>
 
 </div>
-
-
-
-
-    <!-- link rel="stylesheet" type="text/css" href="{{ asset('croppie.css') }}" >
-
-	<div class="container" id="div1">
-		<form method="post" action="{{ route('add.param', ['id' => $id]) }}" id="step1">
-		    @csrf
-			<br />
-			<select name="years" id="years">
-				<option value=""></option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-			</select>
-			<select name="month" id="month">
-				<option value=""></option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-			</select><br />
-			<input type="text" name="title" id="title" /><br />
-			<textarea name="description" id="description"></textarea><br />
-			<input type="submit" value="submit">
-		</form>
-		<a href="javascript:void(0);" onclick="show('div2')">Next >></a>
-	</div>
-	
-	<div class="container" id="div2" style="display:none;">
-		<form method="post" action="{{ route('add.location', ['id' => $id]) }}" id="step2">
-		    @csrf
-			<select name="state" id="state">
-				<option value=""></option>
-				<option value="1">s1</option>
-				<option value="2">s2</option>
-			</select><br />
-			<select name="district" id="district">
-				<option value=""></option>
-				<option value="1">d1</option>
-				<option value="2">d2</option>
-			</select><br />
-			<select name="locality" id="locality">
-				<option value=""></option>
-				<option value="1">l1</option>
-				<option value="2">l2</option>
-			</select><br />
-			<input type="submit" value="submit">
-		</form>
-		<a href="javascript:void(0);" onclick="show('div1')"><< Previous</a>&nbsp;
-		<a href="javascript:void(0);" onclick="show('div3')">Next >></a>
-	</div>
-	
-	<div class="container" id="div3" style="display:none;">
-	    <span id="xyz">
-			<form method="post" action="{{ route('add.image', ['id' => $id]) }}" enctype="multipart/form-data" id="step3">
-				@csrf
-				<input type="file" name="image" id="image" />
-				<input type="submit" value="submit">
-			</form>
-		</span>
-		<span id="abc"></span>
-		<a href="javascript:void(0);" onclick="show('div2')"><< Previous</a>&nbsp;
-	</div>
-	<style>
-.select-field{
-   height:44px;
-   outline: none;
-		font-size: 15px;
-		color: #909090;
-		margin: 0;
-		max-width: 100%;
-		width: 100%;
-		box-sizing: border-box;
-		display: block;
-		background-color: #fcfcfc;
-		font-weight: 500;
-		border: 1px solid #e0e0e0;
-		opacity: 1;
-}
-</style>
 @endsection
 
 @section('dynamicjs')
-<script src="{{ asset('jqueryform.js') }}"></script>
-
-<script src="{{ asset('croppie.js') }}"></script>
 
 <script type="text/javascript">
-
-
-var el = document.getElementById('abc');
-var resize = new Croppie(el, {
-    viewport: { width: 100, height: 100 },
-    boundary: { width: 300, height: 300 },
-    showZoomer: false,
-    enableResize: false,
-    enableOrientation: true,
-    mouseWheelZoom: 'ctrl'
-});
-
-
-$(document).ready(function() { 
-    var options = { 
-        beforeSubmit: showRequest,
-        success: showResponse,
-		dataType: "json", 
-    }; 
-    $('#step1').ajaxForm(options); 
-	
-	
-	var options2 = { 
-        beforeSubmit: showRequestStep2,
-        success: showResponseStep2,
-		dataType: "json", 
-    }; 
-    $('#step2').ajaxForm(options2); 
-	
-	var options3 = { 
-        beforeSubmit: showRequestStep3,
-        success: showResponseStep3,
-		dataType: "json", 
-    }; 
-    $('#step3').ajaxForm(options3); 
-}); 
-
-
-function show (a) {
-	$('#div1').hide();
-	$('#div2').hide();
-	$('#'+a).show();	
+function validate () {	
+$('#error_mess').hide();
+var breed = $('#breed').val();
+var years = $('#years').val();
+var month = $('#month').val();
+var title = $('#title').val();
+var description = $('#description').val();
+var price = $('#price').val();
+var error = '';
+if (breed == "") {
+  error = error + 'Breed is a required field.<br />';
 }
- 
 
-function showRequest(formData, jqForm, options) { 
-	let bre = $('#bre').val();
-	let years = $('#years').val();
-	let month = $('#month').val();
-	let title = $('#title').val();
-	let description = $('#description').val();
-    if (bre =="" || years =="" || month =="" || title == "" || description =="" ) {
-		alert('helooo....');
-		return false;
-	} else {
-		return true; 
-	}
-} 
+if (years == "" && month =="") {
+  error = error + 'The Year/Months field is required.<br />';
+}
 
-function showResponse(responseText, statusText, xhr, $form)  { 
-    if (responseText.result == 1) {
-		$('#div1').hide(function(){
-		    $('#div2').show();
-		});
-	}		
-} 
+if (title == "") {
+  error = error + 'The Title field is required.<br />';
+}
 
+if (description == "" ) {
+  error = error + 'The Description field is required.<br />';
+}
 
-function showRequestStep2(formData, jqForm, options) { 
-	let state = $('#state').val();
-	let district = $('#district').val();
-	let locality = $('#locality').val();
+if (price == "" ) {
+  error = error + 'The Asking Price field is required.<br />';
+}
 
-    if (state =="" || district =="" || locality =="" ) {
-		alert('helooo....');
-		return false;
-	} else {
-		return true; 
-	}
-} 
+if (error == "") {
+ return true;
+}
+else {
+$('#error_p').html(error);
+$('#error_mess').show();
+ window.scrollTo(0, 0); 
+return false;
+}
+}
 
-function showResponseStep2(responseText, statusText, xhr, $form)  { 
-    if (responseText.result == 1) {
-		$('#div1').hide();
-		$('#div2').hide();
-		$('#div3').show();
-	}	
-} 
+    $(document).ready(function() {
 
+      $("#price").bind("keypress keyup blur", function (event) {
 
-function showRequestStep3(formData, jqForm, options) { 
-	let image = $('#image').val();
+		  $(this).val($(this).val().replace(/[^\d].+/, ""));	
+                      
 
-    if (image =="") {
-		alert('helooo....');
-		return false;
-	} else {
-		return true; 
-	}
-} 
+         if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+      });
+      
+  });
 
-function showResponseStep3(responseText, statusText, xhr, $form)  { 
-    if (responseText.result == 1) {
-		$('#div1').hide();
-		$('#div2').hide();
-		$('#div3').show();
-		resize.bind({
-			url: responseText.image,
-		});
-	}	
-} 
+    
 
-</script -->
+</script>
 
 
 @endsection

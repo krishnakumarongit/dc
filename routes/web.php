@@ -15,11 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::any('/add', 'DashboardController@index')->name('add');
-Route::any('/add/{id}', 'DashboardController@index')->name('add.param');
-Route::any('/addlocation/{id}', 'DashboardController@location')->name('add.location');
-Route::any('/addimage/{id}', 'DashboardController@image')->name('add.image');
-
+Route::any('/post-ad', 'DashboardController@index')->name('ad');
+Route::any('/ad', 'DashboardController@stepOne')->name('post.ad');
+Route::any('/post-location/{id}', 'DashboardController@stepTwo')->name('post.location');
 
 Auth::routes();
 
