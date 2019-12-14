@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ads;
 use App\Models\Bread;
+use App\Models\Pincode;
 use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
@@ -108,8 +109,38 @@ class DashboardController extends Controller
 		//check if this add belongs to current user
 		$result = Ads::find($id);
 		if ($result->count() > 0 && $result->user_id == 1) {
-			return view('location');
+			return view('location', ['state' => Pincode::distinct()->orderBy('state')->get(['state'])]);
 		}	
+	}
+	
+	public function getdistrict(Request $request) {
+		if ($request->isMethod('post')) {	
+			$state = $request->input('state');
+			$option = '<option value=""></option>';
+			$out = Pincode::distinct()->where([['state', '=', $state]])->orderBy('district')->get(['district']);
+			if ($out->count() > 0) {
+				foreach ($out as $row) {
+					$option .='<option value="'.$row->district.'">'.ucwords($row->district).'</option>';
+				}
+			}
+		    echo $option;
+		    exit;
+		}
+	}
+	
+	public function getlocation(Request $request) {
+		if ($request->isMethod('post')) {	
+			$district = $request->input('district');
+			$option = '<option value=""></option>';
+			$out = Pincode::distinct()->where([['district', '=', $district]])->orderBy('location')->get(['location']);
+			if ($out->count() > 0) {
+				foreach ($out as $row) {
+					$option .='<option value="'.$row->location.'">'.ucwords($row->location).'</option>';
+				}
+			}
+		    echo $option;
+		    exit;
+		}
 	}
 	
 	

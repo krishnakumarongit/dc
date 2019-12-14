@@ -19,6 +19,10 @@ Route::any('/post-ad', 'DashboardController@index')->name('ad');
 Route::any('/ad', 'DashboardController@stepOne')->name('post.ad');
 Route::any('/post-location/{id}', 'DashboardController@stepTwo')->name('post.location');
 
+
+Route::any('/getdistrict', 'DashboardController@getdistrict')->name('post.getdistrict');
+Route::any('/getlocation', 'DashboardController@getlocation')->name('post.getlocation');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
