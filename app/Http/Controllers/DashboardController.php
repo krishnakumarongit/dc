@@ -195,7 +195,98 @@ class DashboardController extends Controller
 		//check if this add belongs to current user
 		$result = Ads::find($id);
 		if ($result->count() > 0 && $result->user_id == 1) {
-			return view('image', ['id' => $id]);
+			return view('image', ['id' => $id, 
+			'image1' => $result->image_1,
+			'image2' => $result->image_2,
+			'image3' => $result->image_3]);
+		}	
+	}
+	
+	public function stepFourCheck(Request $request, $id)
+	{
+		//check if this add belongs to current user
+		if ($request->isMethod('post')) {	
+			$result = Ads::find($id);
+			if ($result->count() > 0 && $result->user_id == 1) {
+				
+				$validator = Validator::make($request->all(), [
+					'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+				]);	
+				
+				if ($validator->fails()) {
+					  return redirect(route('post.image',['id' => $id]))
+							->withErrors($validator)
+							->withInput();
+				} else {
+				    
+				    $imageName = time().'.'.$request->image->getClientOriginalExtension();
+					$request->image->move(public_path('ads'), $imageName);
+					$checkPost = $request->input('input_check');
+					if ($checkPost == 1) {
+						$result->image_1 = $imageName;
+						$result->save();
+					} else if ($checkPost == 2) {
+						$result->image_2 = $imageName;
+						$result->save();
+					} else if  ($checkPost == 3) {
+					   $result->image_3 = $imageName;
+					   $result->save();
+					} else {
+					
+					}
+					$request->session()->flash('status', 'Image uploaded successfully, you can publish your ad or can upload more images.');
+					return redirect(route('post.image',['id' => $id]));
+			    }	
+			}
+		}
+	}
+	
+	
+	
+	/**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function deleteimage(Request $request, $adid, $id)
+    {
+		//check if this add belongs to current user
+		$result = Ads::find($adid);
+		if ($result->count() > 0 && $result->user_id == 1) {
+			if ($id == 3) {
+				$img3 = $result->image_3;
+				$result->image_3 = '';
+				$result->save();
+				@unlink(public_path().'/ads/'.$img3);
+			}
+			
+			if ($id == 2) {
+				$img3 = $result->image_2;
+				$result->image_2 = '';
+				$result->save();
+				@unlink(public_path().'/ads/'.$img3);
+			}
+			
+			if ($id == 1) {
+				$img3 = $result->image_1;
+				$result->image_1 = '';
+				$result->save();
+				@unlink(public_path().'/ads/'.$img3);
+			}
+			$request->session()->flash('status', 'Image delete successfully, you can publish your ad or can upload more images.');
+			return redirect(route('post.image',['id' => $adid]));
+		}	
+	}
+	
+	public function publish(Request $request, $id)
+    {
+		//check if this add belongs to current user
+		$result = Ads::find($id);
+		if ($result->count() > 0 && $result->user_id == 1) {
+			$result->status = 'published';
+			$result->save();
+			echo "hi";
+			exit;
 		}	
 	}
 	

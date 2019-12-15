@@ -31,6 +31,11 @@ Route::any('/validate-location/{id}', 'DashboardController@stepThree')->name('po
 
 Route::any('/post-image/{id}', 'DashboardController@stepFour')->name('post.image');
 
+Route::any('/post-image-check/{id}', 'DashboardController@stepFourCheck')->name('post.image-check');
+
+Route::any('/delete-image/{adid}/{id}', 'DashboardController@deleteimage')->name('delete-image');
+Route::any('/publish/{id}', 'DashboardController@publish')->name('publish');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
