@@ -23,6 +23,14 @@ Route::any('/post-location/{id}', 'DashboardController@stepTwo')->name('post.loc
 Route::any('/getdistrict', 'DashboardController@getdistrict')->name('post.getdistrict');
 Route::any('/getlocation', 'DashboardController@getlocation')->name('post.getlocation');
 
+
+
+Route::any('/validate-location/{id}', 'DashboardController@stepThree')->name('post.validatelocation');
+
+
+
+Route::any('/post-image/{id}', 'DashboardController@stepFour')->name('post.image');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

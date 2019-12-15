@@ -109,7 +109,7 @@ class DashboardController extends Controller
 		//check if this add belongs to current user
 		$result = Ads::find($id);
 		if ($result->count() > 0 && $result->user_id == 1) {
-			return view('location', ['state' => Pincode::distinct()->orderBy('state')->get(['state'])]);
+			return view('location', ['state' => Pincode::distinct()->orderBy('state')->get(['state']), 'id' => $id]);
 		}	
 	}
 	
@@ -144,6 +144,60 @@ class DashboardController extends Controller
 	}
 	
 	
+	
+	 /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function stepThree(Request $request, $id = 0)
+    {
+		if ($request->isMethod('post')) {	
+			$result = Ads::find($id);
+		    if ($result->count() > 0 && $result->user_id == 1) {
+				$validator = Validator::make($request->all(), [
+					'state' => 'required|max:100|min:3',
+					'district' => 'required_without:month',
+					'location' => 'required_without:years',
+					'email' => 'nullable|max:100|email',
+					'main_phone_number' => 'nullable|max:15|min:9',
+					'other_phone_number' => 'nullable|max:15|min:9'
+				]);	
+				if ($validator->fails()) {
+					  return redirect(route('post.location',['id' => $id]))
+							->withErrors($validator)
+							->withInput();
+				} else {
+					//insert here
+					$result = Ads::find($id);
+					$result->state = $request->input('state');
+					$result->district = $request->input('district');
+					$result->location = $request->input('location');
+					$result->email = $request->input('email');
+					$result->other_phone_number = $request->input('other_phone_number');
+					$result->main_phone_number = $request->input('main_phone_number');
+					$result->save();
+					return redirect(route('post.image',['id' => $result->id]));
+				}
+		    }
+		}
+	}
+	
+	
+	
+	/**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function stepFour(Request $request, $id)
+    {
+		//check if this add belongs to current user
+		$result = Ads::find($id);
+		if ($result->count() > 0 && $result->user_id == 1) {
+			return view('image', ['id' => $id]);
+		}	
+	}
 	
 	
 }
